@@ -115,41 +115,41 @@ async def dice(ctx):
 
 
 @bot.command(pass_context=True)
-#@commands.has_role("스태프")
 async def 대기초기화(ctx):
     if str(ctx.message.channel) != "대기순서":
         await ctx.send("대기순서 채널에 작성해주세요")
         time.sleep(BOT_SLEEP_TIME)
-        await ctx.channel.purge(limit=DELETE_AMOUNT)
+        #await ctx.channel.purge(limit=DELETE_AMOUNT)
     else:
         wait_mem.clear()
         wait_mem.append("")
         await ctx.send(ctx.author.mention + "님이 경기 대기실을 초기화하였습니다.")
         time.sleep(BOT_SLEEP_TIME)
-        await ctx.channel.purge(limit=DELETE_AMOUNT)
+        #await ctx.channel.purge(limit=DELETE_AMOUNT)
 
 
 @bot.command()
 @commands.has_role("스태프")
-async def 특정번호삭제(ctx, *, text):
-    if str(ctx.role) != "스태프":
-        await ctx.send("대기순서 채널에 작성해주세요")
-    else:
+async def 번호삭제(ctx, *, text):
+    role_names = [role.name for role in ctx.author.roles]
+    if '스태프' in role_names:
         del_wait = ""
         in_num = int(text)
         try:
             if text == 0:
                 await ctx.send("0번은 제거할 수 없습니다.")
                 time.sleep(BOT_SLEEP_TIME)
-                await ctx.channel.purge(limit=DELETE_AMOUNT)
+                #await ctx.channel.purge(limit=DELETE_AMOUNT)
             else:
                 del_wait = wait_mem[in_num]
                 del wait_mem[in_num]
                 await ctx.send(ctx.author.display_name + " 님이 " + del_wait + "님을 대기열에서 삭제하였습니다.")
                 time.sleep(BOT_SLEEP_TIME)
-                await ctx.channel.purge(limit=DELETE_AMOUNT)
+                #await ctx.channel.purge(limit=DELETE_AMOUNT)
         except:
             await ctx.send("정확한 번호를 입력해주세요")
+    else:
+        await ctx.send("대기순서 채널에 작성해주세요")
 
 
 @bot.command()
@@ -170,15 +170,16 @@ async def 대기참가(ctx, *, text):
             if check_overlap == 0:
                 wait_mem.append(ctx.author.display_name + "/" + text)
 
-                await ctx.send(content=f"경기 대기실 목록에 {text} 포지션으로 참가되었습니다")
+                await ctx.send(content=f"{ctx.author.display_name}님\n"
+                                       f"경기 대기실 목록에 {text} 포지션으로 추가되었습니다")
                 time.sleep(BOT_SLEEP_TIME)
-                await ctx.channel.purge(limit=DELETE_AMOUNT)
+                #await ctx.channel.purge(limit=DELETE_AMOUNT)
 
 
             else:
                 await ctx.send("중복 등록이므로 불가합니다.")
                 time.sleep(BOT_SLEEP_TIME)
-                await ctx.channel.purge(limit=DELETE_AMOUNT)
+                #await ctx.channel.purge(limit=DELETE_AMOUNT)
 
         except:
             print("aaa")
@@ -197,11 +198,11 @@ async def 대기삭제(ctx):
                     wait_mem.remove(wait_mem[i])
                     await ctx.send(ctx.author.display_name + "삭제되었습니다")
                     time.sleep(BOT_SLEEP_TIME)
-                    await ctx.channel.purge(limit=DELETE_AMOUNT)
+                    #await ctx.channel.purge(limit=DELETE_AMOUNT)
         except:
             await ctx.send(content=f"{ctx.author.display_name} 님은 대기열에 없습니다.")
             time.sleep(BOT_SLEEP_TIME+3)
-            await ctx.channel.purge(limit=DELETE_AMOUNT)
+            #await ctx.channel.purge(limit=DELETE_AMOUNT)
 
 
 @bot.command()
