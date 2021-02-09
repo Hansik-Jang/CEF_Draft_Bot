@@ -933,6 +933,480 @@ async def 드래프트2(ctx):
 
                 await ctx.send("\n\n대기 \n" + temp_w_team)
 
+@bot.command()
+async def 드래프트3(ctx):
+    #if str(ctx.message.channel) != "드래프트":
+        #await ctx.send("드래프트 채널에 작성해주세요")
+    #else:
+        switch = 0
+        entry.clear()
+        entry.append("")
+        queue.clear()
+        queue.append("")
+        st.clear()
+        lw.clear()
+        rw.clear()
+        cam.clear()
+        cm.clear()
+        cdm.clear()
+        lb.clear()
+        cb.clear()
+        rb.clear()
+        gk.clear()
+        a_team.clear()
+        b_team.clear()
+        c_team.clear()
+
+        draft = await ctx.send("포지션을 선택해주세요")
+        await draft.add_reaction("<:ST:706530008465932299>")
+        await draft.add_reaction("<:LW:706530007937450036>")
+        await draft.add_reaction("<:RW:706530008201560156>")
+        await draft.add_reaction("<:CM:706530007928930386>")
+        await draft.add_reaction("<:CDM:706530008289509466>")
+        await draft.add_reaction("<:LB:706530008369463359>")
+        await draft.add_reaction("<:CB:706530008113610803>")
+        await draft.add_reaction("<:RB:706530008100765707>")
+        await draft.add_reaction("<:GK:706530008088182786>")
+
+        cd = await ctx.send("카운트 다운")
+        for i in range(0, MAX_COUNT):
+            j = MAX_COUNT - i
+            await cd.edit(content=f"{j}초 남았습니다.")
+            time.sleep(1)
+            if j == 1:
+                await cd.edit(content="선택 종료")
+                for k in range(0, len(entry)):
+                    if entry[k].startswith("ST"):
+                        st.append(entry[k])
+                    if entry[k].startswith("LW"):
+                        lw.append(entry[k])
+                    if entry[k].startswith("RW"):
+                        rw.append(entry[k])
+                    if entry[k].startswith("CM"):
+                        cm.append(entry[k])
+                    if entry[k].startswith("CDM"):
+                        cdm.append(entry[k])
+                    if entry[k].startswith("LB"):
+                        lb.append(entry[k])
+                    if entry[k].startswith("CB"):
+                        cb.append(entry[k])
+                    if entry[k].startswith("RB"):
+                        rb.append(entry[k])
+                    if entry[k].startswith("GK"):
+                        gk.append(entry[k])
+
+                # ST 선발 & 대기열 이동
+                try:
+                    temp = random.choice(st)
+                    a_team.append(temp)
+                    st.remove(temp)
+
+                    temp = random.choice(st)
+                    b_team.append(temp)
+                    st.remove(temp)
+
+                    temp = random.choice(st)
+                    c_team.append(temp)
+                    st.remove(temp)
+
+                except:
+                    print(a_team)
+
+                # LW 선발
+                try:
+                    temp_lw = random.choice(lw)
+                    b_team.append(temp_lw)
+                    lw.remove(temp_lw)
+
+                    temp_lw = random.choice(lw)
+                    c_team.append(temp_lw)
+                    lw.remove(temp_lw)
+
+                    temp_lw = random.choice(lw)
+                    a_team.append(temp_lw)
+                    lw.remove(temp_lw)
+                except:
+                    print(a_team)
+
+                # RW 선발
+                try:
+                    temp_rw = random.choice(rw)
+                    c_team.append(temp_rw)
+                    rw.remove(temp_rw)
+
+                    temp_rw = random.choice(rw)
+                    b_team.append(temp_rw)
+                    rw.remove(temp_rw)
+
+                    temp_rw = random.choice(rw)
+                    a_team.append(temp_rw)
+                    rw.remove(temp_rw)
+                except:
+                    print(a_team)
+
+                # CM 선발 & 대기열 이동
+                try:
+                    for j in range(0, 2):
+                        temp_cm = random.choice(cm)
+                        a_team.append(temp_cm)
+                        cm.remove(temp_cm)
+
+                        temp_cm = random.choice(cm)
+                        b_team.append(temp_cm)
+                        cm.remove(temp_cm)
+
+                        temp_cm = random.choice(cm)
+                        c_team.append(temp_cm)
+                        cm.remove(temp_cm)
+                except:
+                    print(a_team)
+
+                # CDM 선발
+                try:
+                    temp_cdm = random.choice(cdm)
+                    a_team.append(temp_cdm)
+                    cdm.remove(temp_cdm)
+
+                    temp_cdm = random.choice(cdm)
+                    b_team.append(temp_cdm)
+                    cdm.remove(temp_cdm)
+
+                    temp_cdm = random.choice(cdm)
+                    c_team.append(temp_cdm)
+                    cdm.remove(temp_cdm)
+                except:
+                    print(a_team)
+
+                # LB 선발
+                try:
+                    temp_lb = random.choice(lb)
+                    b_team.append(temp_lb)
+                    lb.remove(temp_lb)
+
+                    temp_lb = random.choice(lb)
+                    c_team.append(temp_lb)
+                    lb.remove(temp_lb)
+
+                    temp_lb = random.choice(lb)
+                    a_team.append(temp_lb)
+                    lb.remove(temp_lb)
+                except:
+                    print(a_team)
+
+                # CB 선발
+                try:
+                    for j in range(0, 2):
+                        temp_cb = random.choice(cb)
+                        c_team.append(temp_cb)
+                        cb.remove(temp_cb)
+
+                        temp_cb = random.choice(cb)
+                        a_team.append(temp_cb)
+                        cb.remove(temp_cb)
+
+                        temp_cb = random.choice(cb)
+                        b_team.append(temp_cb)
+                        cb.remove(temp_cb)
+                except:
+                    print(a_team)
+
+                # RB 선발
+                try:
+                    temp_rb = random.choice(rb)
+                    a_team.append(temp_rb)
+                    rb.remove(temp_rb)
+
+                    temp_rb = random.choice(rb)
+                    b_team.append(temp_rb)
+                    rb.remove(temp_rb)
+
+                    temp_rb = random.choice(rb)
+                    c_team.append(temp_rb)
+                    rb.remove(temp_rb)
+                except:
+                    print(a_team)
+
+                # GK 선발
+                try:
+                    temp_gk = random.choice(gk)
+                    a_team.append(temp_gk)
+                    gk.remove(temp_gk)
+
+                    temp_gk = random.choice(gk)
+                    b_team.append(temp_gk)
+                    gk.remove(temp_gk)
+
+                    temp_gk = random.choice(gk)
+                    c_team.append(temp_gk)
+                    gk.remove(temp_gk)
+                except:
+                    print(a_team)
+
+                # ST 대기열 정리
+                for j in range(0, len(st)):
+                    try:
+                        queue.append(st[j])
+                    except:
+                        print(a_team)
+
+                # LW 대기열 정리
+                for j in range(0, len(lw)):
+                    try:
+                        queue.append(lw[j])
+                    except:
+                        print(a_team)
+
+                # RW 대기열 정리
+                for j in range(0, len(rw)):
+                    try:
+                        queue.append(rw[j])
+                    except:
+                        print(a_team)
+
+                # CM 대기열 정리
+                for j in range(0, len(cm)):
+                    try:
+                        queue.append(cm[j])
+                    except:
+                        print(a_team)
+
+                # CDM 대기열 정리
+                for j in range(0, len(cdm)):
+                    try:
+                        queue.append(cdm[j])
+                    except:
+                        print(a_team)
+
+                # LB 대기열 정리
+                for j in range(0, len(lb)):
+                    try:
+                        queue.append(lb[j])
+                    except:
+                        print(a_team)
+
+                # CB 대기열 정리
+                for j in range(0, len(cb)):
+                    try:
+                        queue.append(cb[j])
+                    except:
+                        print(a_team)
+
+                # RB 대기열 정리
+                for j in range(0, len(rb)):
+                    try:
+                        queue.append(rb[j])
+                    except:
+                        print(a_team)
+
+                # GK 대기열 정리
+                for j in range(0, len(gk)):
+                    try:
+                        queue.append(gk[j])
+                    except:
+                        print(a_team)
+
+                # 내전 A팀
+                temp_a_team = ""
+                for j in range(0, len(a_team)+1):
+                    try:
+                        temp_a_team = temp_a_team + " " + a_team[j]
+                        if a_team[j].startswith("ST"):
+                            if a_team[j + 1].startswith("LW"):
+                                temp_a_team = temp_a_team + "\n\n"
+                        if a_team[j].startswith("LW"):
+                            if a_team[j + 1].startswith("RW"):
+                                temp_a_team = temp_a_team + "\n\n"
+                        if a_team[j].startswith("RW"):
+                            if a_team[j + 1].startswith("CM"):
+                                temp_a_team = temp_a_team + "\n\n"
+                        if a_team[j].startswith("CM"):
+                            if a_team[j + 1].startswith("CDM"):
+                                temp_a_team = temp_a_team + "\n\n"
+                        if a_team[j].startswith("CDM"):
+                            if a_team[j + 1].startswith("LB"):
+                                temp_a_team = temp_a_team + "\n\n"
+                        if a_team[j].startswith("LB"):
+                            if a_team[j + 1].startswith("CB"):
+                                temp_a_team = temp_a_team + "\n\n"
+                        if a_team[j].startswith("CB"):
+                            if a_team[j + 1].startswith("RB"):
+                                temp_a_team = temp_a_team + "\n\n"
+                        if a_team[j].startswith("RB"):
+                            if a_team[j + 1].startswith("GK"):
+                                temp_a_team = temp_a_team + "\n\n"
+                    except:
+                        print(temp_a_team)
+
+                await ctx.send("팀 노랑 명단 : \n" + temp_a_team)
+
+                # 내전 B팀
+                temp_b_team = ""
+                for i in range(0, len(b_team)+1):
+                    try:
+                        temp_b_team = temp_b_team + " " + b_team[i]
+                        if b_team[i].startswith("ST"):
+                            if b_team[i + 1].startswith("LW"):
+                                temp_b_team = temp_b_team + "\n\n"
+                        if b_team[i].startswith("LW"):
+                            if b_team[i + 1].startswith("RW"):
+                                temp_b_team = temp_b_team + "\n\n"
+                        if b_team[i].startswith("RW"):
+                            if b_team[i + 1].startswith("CM"):
+                                temp_b_team = temp_b_team + "\n\n"
+                        if b_team[i].startswith("CM"):
+                            if b_team[i + 1].startswith("CDM"):
+                                temp_b_team = temp_b_team + "\n\n"
+                        if b_team[i].startswith("CDM"):
+                            if b_team[i + 1].startswith("LB"):
+                                temp_b_team = temp_b_team + "\n\n"
+                        if b_team[i].startswith("LB"):
+                            if b_team[i + 1].startswith("CB"):
+                                temp_b_team = temp_b_team + "\n\n"
+                        if b_team[i].startswith("CB"):
+                            if b_team[i + 1].startswith("RB"):
+                                temp_b_team = temp_b_team + "\n\n"
+                        if b_team[i].startswith("RB"):
+                            if b_team[i + 1].startswith("GK", ""):
+                                temp_b_team = temp_b_team + "\n\n"
+                    except:
+                        print(temp_b_team)
+
+                await ctx.send("\n\n팀 검정 명단 :  \n" + temp_b_team)
+
+                # 내전 C팀
+                temp_c_team = ""
+                for i in range(0, len(c_team)+1):
+                    try:
+                        temp_c_team = temp_c_team + " " + c_team[i]
+                        if c_team[i].startswith("ST"):
+                            if c_team[i + 1].startswith("LW"):
+                                temp_c_team = temp_c_team + "\n\n"
+                        if c_team[i].startswith("LW"):
+                            if c_team[i + 1].startswith("RW"):
+                                temp_c_team = temp_c_team + "\n\n"
+                        if c_team[i].startswith("RW"):
+                            if c_team[i + 1].startswith("CM"):
+                                temp_c_team = temp_c_team + "\n\n"
+                        if c_team[i].startswith("CM"):
+                            if c_team[i + 1].startswith("CDM"):
+                                temp_c_team = temp_c_team + "\n\n"
+                        if c_team[i].startswith("CDM"):
+                            if c_team[i + 1].startswith("LB"):
+                                temp_c_team = temp_c_team + "\n\n"
+                        if c_team[i].startswith("LB"):
+                            if c_team[i + 1].startswith("CB"):
+                                temp_c_team = temp_c_team + "\n\n"
+                        if c_team[i].startswith("CB"):
+                            if c_team[i + 1].startswith("RB"):
+                                temp_c_team = temp_c_team + "\n\n"
+                        if c_team[i].startswith("RB"):
+                            if c_team[i + 1].startswith("GK", ""):
+                                temp_c_team = temp_c_team + "\n\n"
+                    except:
+                        print(temp_c_team)
+
+                await ctx.send("\n\n팀 하양 명단 :  \n" + temp_c_team)
+
+                temp_w_team = ""
+                for i in range(0, len(queue)):
+                    try:
+                        if queue[i].startswith("ST"):
+                            queue[i].replace("ST", "")
+                            temp_w_team = temp_w_team + queue[i] + " ST\n"
+                        if queue[i].startswith("LW"):
+                            queue[i].replace("LW", "")
+                            temp_w_team = temp_w_team + queue[i] + " LW\n"
+                        if queue[i].startswith("RW"):
+                            queue[i].replace("RW", "")
+                            temp_w_team = temp_w_team + queue[i] + " RW\n"
+                        if queue[i].startswith("CM"):
+                            queue[i].replace("CM", "")
+                            temp_w_team = temp_w_team + queue[i] + " CM\n"
+                        if queue[i].startswith("CDM"):
+                            queue[i].replace("CDM", "")
+                            temp_w_team = temp_w_team + queue[i] + " CDM\n"
+                        if queue[i].startswith("LB"):
+                            queue[i].replace("LB", "")
+                            temp_w_team = temp_w_team + queue[i] + " LB\n"
+                        if queue[i].startswith("CB"):
+                            queue[i].replace("CB", "")
+                            temp_w_team = temp_w_team + queue[i] + " CB\n"
+                        if queue[i].startswith("RB"):
+                            queue[i].replace("RB", "")
+                            temp_w_team = temp_w_team + queue[i] + " RB\n"
+                        if queue[i].startswith("GK"):
+                            queue[i].replace("GK", "")
+                            temp_w_team = temp_w_team + queue[i] + " GK\n"
+                    except:
+                        pass
+
+                await ctx.send("\n\n대기 \n" + temp_w_team)
+
+'''
+@bot.command()
+async def 대기실분배2(ctx, num1, num2):
+    key = 0
+    div = []
+    wait_mem_name = []
+    wait_mem_pos = []
+    alert = ""
+
+    for i in range(1, len(wait_mem)):
+        split = wait_mem[i].split('/')
+        wait_mem_name[i] = split[0]
+        wait_mem_pos[i] = split[1]
+
+        alert = alert + f"{i} . " + wait_mem[i] + "\n"
+
+    await ctx.send("대기목록 \n")
+    await ctx.send("```" + alert + "```")
+    await ctx.send(content=f"닉네임 : {wait_mem_name}, 포지션 : {wait_mem_pos}")
+    key = 1
+
+    if key == 1:
+        if num1 == num2:
+            for j in range(0, len(wait_mem)-1):
+                pass
+'''
+
+
+
+@bot.event
+async def on_reaction_add(reaction, user):
+    for i in range(0, len(entry)):
+        if user.mention in entry[i]:
+            switch = 1
+            break
+        else:
+            switch = 0
+
+    # 사다리타기
+    if str(reaction.emoji) == "⭕":
+        entry.append("⭕/" + user.mention)
+
+    # 드래프트용
+    if switch == 0:  # 스위치가 꺼져있으면
+        if user.bot == 1:  # 봇이면 패스
+            return None
+        if str(reaction.emoji) == "<:ST:706530008465932299>":
+            entry.append("ST/" + user.mention)
+        if str(reaction.emoji) == "<:LW:706530007937450036>":
+            entry.append("LW/" + user.mention)
+        if str(reaction.emoji) == "<:RW:706530008201560156>":
+            entry.append("RW/" + user.mention)
+        if str(reaction.emoji) == "<:CM:706530007928930386>":
+            entry.append("CM/" + user.mention)
+        if str(reaction.emoji) == "<:CDM:706530008289509466>":
+            entry.append("CDM/" + user.mention)
+        if str(reaction.emoji) == "<:LB:706530008369463359>":
+            entry.append("LB/" + user.mention)
+        if str(reaction.emoji) == "<:CB:706530008113610803>":
+            entry.append("CB/" + user.mention)
+        if str(reaction.emoji) == "<:RB:706530008100765707>":
+            entry.append("RB/" + user.mention)
+        if str(reaction.emoji) == "<:GK:706530008088182786>":
+            entry.append("GK/" + user.mention)
+
 
 @bot.command()
 async def 드래프트4(ctx):
