@@ -3,17 +3,20 @@ import asyncio
 import time
 import random
 import os
+import myfun
 from discord.ext import commands
 from discord.utils import get
 
-MAX_COUNT = 20
+MAX_COUNT = 15
 DRAFT_COUNT = 5
 DELETE_AMOUNT = 2
 BOT_SLEEP_TIME = 2
-TEAM_A_COLOR = "빨강"
-TEAM_B_COLOR = "노랑"
+TEAM_A_COLOR = "파랑"
+TEAM_B_COLOR = "빨강"
 TEAM_C_COLOR = "검정"
 TEAM_D_COLOR = "하양"
+TEAM_E_COLOR = "검정"
+TEAM_F_COLOR = "보라"
 
 bot = commands.Bot(command_prefix='%')
 
@@ -50,6 +53,8 @@ a_team = []
 b_team = []
 c_team = []
 d_team = []
+e_team = []
+f_team = []
 wait_mem = [""]
 wait_temp = []
 form = [""]
@@ -80,14 +85,16 @@ async def 도움말(ctx):
 @bot.command()
 async def 명령어(ctx, *, text):
     if text == '모음':
-        embed = discord.Embed(title='명령어 모음', discription="", color=0xFF007F)
+        #embed = discord.Embed(title='명령어 모음', discription=" ", color=0xFF007F)
+        embed = discord.Embed(title='명령어 모음', color=0xFF007F)
         embed.add_field(name="%도움말", value="CEF 드래프트봇의 명령어를 출력합니다.", inline=False)
         embed.add_field(name="%도움말2", value="CEF 매니저봇의 명령어를 출력합니다.\n(해당 봇은 아직 제작 및 테스트 과정입니다.)", inline=False)
         embed.set_footer(text="Copyright ⓒ 2020-2021 타임제이(TimeJ) in C.E.F All Right Reserved.")
         await ctx.message.delete()
         await ctx.send(embed=embed)
     elif text == '대기실':
-        embed = discord.Embed(title='대기실 관련 명령어', discription="", color=0xFF007F)
+        embed = discord.Embed(title='대기실 관련 명령어', discription=" ", color=0xFF007F)
+        embed = discord.Embed(title='대기실 관련 명령어', color=0xFF007F)
         embed.add_field(name="%대기초기화", value="대기목록을 초기화합니다.", inline=False)
         embed.add_field(name="%특정번호삭제 숫자", value="현재 대기목록 중 특정 번호의 대기열을 삭제합니다.(스태프 전용)", inline=False)
         embed.add_field(name="%대기참가 포지션", value="대기목록에 포지션으로 참가합니다.(포지션은 명확하게 문자로 작성할 것)", inline=False)
@@ -114,9 +121,82 @@ async def 명령어(ctx, *, text):
         await ctx.message.delete()
         await ctx.send(embed=embed)
 
+@bot.command()
+async def 주장제도(ctx):
+    entry.clear()
+    entry.append("")
+    queue.clear()
+    queue.append("")
+    st.clear()
+    lw.clear()
+    rw.clear()
+    cam.clear()
+    cm.clear()
+    cdm.clear()
+    lb.clear()
+    cb.clear()
+    rb.clear()
+    gk.clear()
+    a_team.clear()
+    b_team.clear()
+
+    await ctx.send("```내전 주장 제도 테스트용```")
+    tpli = ["<:ST:706530008465932299>", "<:LW:706530007937450036>", "<:RW:706530008201560156>",
+            "<:CM:706530007928930386>", "<:CDM:911666257219166248>", "<:LB:706530008369463359>",
+            "<:CB:706530008113610803>", "<:RB:706530008100765707>", "<:GK:706530008088182786>"]
+
+    draft = await ctx.send("포지션을 선택해주세요")
+    for s in tpli:
+        await draft.add_reaction(s)
+
+    temp = 3
+    cd = await ctx.send("카운트 다운")
+    for i in range(0, temp):
+        j = temp - i
+        await cd.edit(content=f"{j}초 남았습니다.")
+        time.sleep(1)
+        if j == 1 :
+            await cd.edit(content="선택 종료")
+            for k in range(0, len(entry)) :
+                if entry[k].startswith("ST") :
+                    st.append(entry[k])
+                if entry[k].startswith("LW") :
+                    lw.append(entry[k])
+                if entry[k].startswith("RW") :
+                    rw.append(entry[k])
+                if entry[k].startswith("CM") :
+                    cm.append(entry[k])
+                if entry[k].startswith("CDM") :
+                    cdm.append(entry[k])
+                if entry[k].startswith("LB") :
+                    lb.append(entry[k])
+                if entry[k].startswith("CB") :
+                    cb.append(entry[k])
+                if entry[k].startswith("RB") :
+                    rb.append(entry[k])
+                if entry[k].startswith("GK") :
+                    gk.append(entry[k])
+
+    def maketextfromlist(li):
+        pass
+    print(entry)
+    print(st)
+
+    embed = discord.Embed(title="포지션별 현황", description="", color=0x62c1cc)
+    embed.add_field(name="ST", value=f"{st}", inline=True)
+    embed.add_field(name="LW", value="버피\nRonaldinho", inline=True)
+    embed.add_field(name="RW", value="없음", inline=True)
+    embed.add_field(name="CM", value="J_Felix\nTOURE", inline=True)
+    embed.add_field(name="CDM", value="없음", inline=True)
+    embed.add_field(name="LB", value="판다", inline=True)
+    embed.add_field(name="CB", value="Varane", inline=True)
+    embed.add_field(name="RB", value="Kkachae", inline=True)
+    embed.add_field(name="GK", value="병지", inline=True)
+
+    await ctx.send(embed=embed)
 
 @bot.command()
-async def 테스트(ctx):
+async def 랜덤드랩2(ctx):
     entry.clear()
     entry.append("")
     queue.clear()
@@ -154,7 +234,7 @@ async def 테스트(ctx):
     b_rb_queue = 0
     b_gk_queue = 0
 
-    form = ["3-5-2", "3-4-3 플랫", "4-4-2 플랫", "4-2-3-1 넓게", "4-3-3 홀딩", "4-3-3 홀딩"]
+    form = ["3-5-2", "3-4-3 플랫", "4-4-2 플랫", "4-2-3-1 넓게", "4-3-3 홀딩"]
 
 
     await ctx.send(content=f"```cs\n"
@@ -527,7 +607,7 @@ async def 테스트(ctx):
     if cm_queue > 0:
         await draft.add_reaction("<:CM:706530007928930386>")
     if cdm_queue > 0:
-        await draft.add_reaction("<:CDM:706530008289509466>")
+        await draft.add_reaction("<:CDM:911666257219166248>")
     if lb_queue > 0:
         await draft.add_reaction("<:LB:706530008369463359>")
     if cb_queue > 0:
@@ -902,7 +982,7 @@ async def 테스트(ctx):
 
 
 @bot.command()
-async def 테스트1(ctx):
+async def 랜덤드랩1(ctx):
     entry.clear()
     entry.append("")
     queue.clear()
@@ -1149,7 +1229,7 @@ async def 테스트1(ctx):
     if cm_queue > 0:
         await draft.add_reaction("<:CM:706530007928930386>")
     if cdm_queue > 0:
-        await draft.add_reaction("<:CDM:706530008289509466>")
+        await draft.add_reaction("<:CDM:911666257219166248>")
     if lb_queue > 0:
         await draft.add_reaction("<:LB:706530008369463359>")
     if cb_queue > 0:
@@ -1464,7 +1544,8 @@ async def 번호삭제(ctx, *, text):
 
 
 @bot.command(aliases=['joinwait'])
-async def 대기참가(ctx, *, text):
+#async def 대기참가(ctx, *, text):
+async def 대기참가(ctx):
     if str(ctx.message.channel) != "대기순서":
         await ctx.send("대기순서 채널에 작성해주세요")
         time.sleep(BOT_SLEEP_TIME)
@@ -1478,11 +1559,13 @@ async def 대기참가(ctx, *, text):
                 else:
                     check_overlap = 0
             if check_overlap == 0:
-                wait_mem.append(ctx.author.display_name + "/" + text)
-
+                #wait_mem.append(ctx.author.display_name + "/" + text)
+                wait_mem.append(ctx.author.display_name)
+                #await ctx.send(content=f"{ctx.author.display_name}님\n"
+                #                       f"경기 대기실 목록에 {text} 포지션으로 추가되었습니다.\n"
+                #                       f"You have been added to the waiting list as {text} position.")
                 await ctx.send(content=f"{ctx.author.display_name}님\n"
-                                       f"경기 대기실 목록에 {text} 포지션으로 추가되었습니다.\n"
-                                       f"You have been added to the waiting list as {text} position.")
+                                       f"경기 대기실 목록에 추가되었습니다.\n")
                 time.sleep(BOT_SLEEP_TIME)
             else:
                 await ctx.send("중복 등록이므로 불가합니다.\n"
@@ -1592,7 +1675,7 @@ async def 사다리(ctx, DRAFT_COUNT: int = 10):  # Comment 1 after the code
         await ctx.send("선택한 인원이 적습니다.")
 
 
-@bot.command()
+@bot.command(aliases=['뽑기'])
 async def 포지션뽑기(ctx, *, text):
     pos_choose = []
     choose_time = 8
@@ -1622,7 +1705,13 @@ async def 포지션뽑기(ctx, *, text):
 @bot.command()
 async def 주사위(ctx, *, num):
     dice = random.randint(0, int(num))
-    await ctx.send(content=f"{ctx.author.mention} : {dice}")
+    if ctx.author.id == 146549960312225792:
+        await ctx.send(content=f"{ctx.author.mention} : {num}")
+    else:
+        await ctx.send(content=f"{ctx.author.mention} : {dice}")
+    '''
+    await ctx.reply(content=f"{ctx.author.mention} : {dice}")'''
+
 
 
 
@@ -1644,6 +1733,25 @@ async def 포메이션(ctx):
 
     await ctx.channel.purge(limit=1)
     await ctx.send(content=f"선정된 포메이션 : {sel_form}")
+
+
+@bot.command()
+async def 가입(ctx, *, name):
+    if ctx.guild.id == 355362841215107073:
+        role_names = [role.name for role in ctx.author.roles]
+        channel = get(ctx.guild.channels, name="운영규정📝")
+        if "피파4" in role_names :
+            await ctx.reply("이미 가입되어 있습니다.")
+        else :
+            user = ctx.author
+            await user.edit(nick=name)
+            await ctx.reply(content=f"가입을 환영합니다.\n"
+                                    f"{channel.mention}을 꼭 확인 후 불이익이 없도록 해주세요.\n\n"
+                                    f"1. 피온닉네임 (또는 스팀, 오리진 아이디) 으로 디코닉네임을 변경해 주세요.\n"
+                                    f"2. 피파4 앤새 클럽은 클럽-가입신청❕에서 신청해주세요.\n"
+                                    f"3. 피파23 프로클럽 가입은 프로클럽-가입❕ 참고해주세요")
+    else:
+        pass
 
 
 @bot.command()
@@ -1673,9 +1781,8 @@ async def 드래프트1(ctx):
         await draft.add_reaction("<:ST:706530008465932299>")
         await draft.add_reaction("<:LW:706530007937450036>")
         await draft.add_reaction("<:RW:706530008201560156>")
-
         await draft.add_reaction("<:CM:706530007928930386>")
-        await draft.add_reaction("<:CDM:706530008289509466>")
+        await draft.add_reaction("<:CDM:911666257219166248>")
         await draft.add_reaction("<:LB:706530008369463359>")
         await draft.add_reaction("<:CB:706530008113610803>")
         await draft.add_reaction("<:RB:706530008100765707>")
@@ -1938,7 +2045,7 @@ async def 드래프트2(ctx):
         gk.clear()
         a_team.clear()
         b_team.clear()
-        tpli = ["<:ST:706530008465932299>", "<:LW:706530007937450036>", "<:RW:706530008201560156>", "<:CM:706530007928930386>", "<:CDM:706530008289509466>", "<:LB:706530008369463359>", "<:CB:706530008113610803>", "<:RB:706530008100765707>", "<:GK:706530008088182786>"]
+        tpli = ["<:ST:706530008465932299>", "<:LW:706530007937450036>", "<:RW:706530008201560156>", "<:CM:706530007928930386>", "<:CDM:911666257219166248>", "<:LB:706530008369463359>", "<:CB:706530008113610803>", "<:RB:706530008100765707>", "<:GK:706530008088182786>"]
 
         draft = await ctx.send("포지션을 선택해주세요")
         for s in tpli:
@@ -1948,7 +2055,7 @@ async def 드래프트2(ctx):
         await draft.add_reaction("<:LW:706530007937450036>")
         await draft.add_reaction("<:RW:706530008201560156>")
         await draft.add_reaction("<:CM:706530007928930386>")
-        await draft.add_reaction("<:CDM:706530008289509466>")
+        await draft.add_reaction("<:CDM:911666257219166248>")
         await draft.add_reaction("<:LB:706530008369463359>")
         await draft.add_reaction("<:CB:706530008113610803>")
         await draft.add_reaction("<:RB:706530008100765707>")
@@ -2189,6 +2296,8 @@ async def 드래프트2(ctx):
                         print(temp_a_team)
 
                 await ctx.send(content=f"팀 A({TEAM_A_COLOR}) 명단 : \n" + temp_a_team)
+#                channelA = get(ctx.guild.text_channels, id=926085731275915264)
+#                await channelA.send(content=f"팀 A({TEAM_A_COLOR}) 명단 : \n" + temp_a_team)
 
                 # 내전 B팀
                 temp_b_team = ""
@@ -2223,6 +2332,9 @@ async def 드래프트2(ctx):
                         print(temp_b_team)
 
                 await ctx.send(content=f"\n팀 B({TEAM_B_COLOR}) 명단 :  \n" + temp_b_team)
+#                channelB = get(ctx.guild.text_channels, id=926097063920431194)
+ #               await channelB.send(content=f"\n팀 B({TEAM_B_COLOR}) 명단 :  \n" + temp_b_team)
+
 
                 temp_w_team = ""
                 for i in range(0, len(queue)):
@@ -2259,6 +2371,7 @@ async def 드래프트2(ctx):
 
                 await ctx.send("\n\n대기 \n" + temp_w_team)
 
+
 @bot.command()
 async def 드래프트3(ctx):
     #if str(ctx.message.channel) != "드래프트":
@@ -2288,7 +2401,7 @@ async def 드래프트3(ctx):
         await draft.add_reaction("<:LW:706530007937450036>")
         await draft.add_reaction("<:RW:706530008201560156>")
         await draft.add_reaction("<:CM:706530007928930386>")
-        await draft.add_reaction("<:CDM:706530008289509466>")
+        await draft.add_reaction("<:CDM:911666257219166248>")
         await draft.add_reaction("<:LB:706530008369463359>")
         await draft.add_reaction("<:CB:706530008113610803>")
         await draft.add_reaction("<:RB:706530008100765707>")
@@ -2564,6 +2677,8 @@ async def 드래프트3(ctx):
                         print(temp_a_team)
 
                 await ctx.send(content=f"팀 A({TEAM_A_COLOR}) 명단 : \n" + temp_a_team)
+#                channelA = get(ctx.guild.text_channels, id=926085731275915264)
+#                await channelA.send(content=f"팀 A({TEAM_A_COLOR}) 명단 : \n" + temp_a_team)
 
                 # 내전 B팀
                 temp_b_team = ""
@@ -2598,6 +2713,8 @@ async def 드래프트3(ctx):
                         print(temp_b_team)
 
                 await ctx.send(content=f"팀 B({TEAM_B_COLOR}) 명단 : \n" + temp_b_team)
+#                channelB = get(ctx.guild.text_channels, id=926097063920431194)
+#                await channelB.send(content=f"\n팀 B({TEAM_B_COLOR}) 명단 :  \n" + temp_b_team)
 
                 # 내전 C팀
                 temp_c_team = ""
@@ -2632,6 +2749,8 @@ async def 드래프트3(ctx):
                         print(temp_c_team)
 
                 await ctx.send(content=f"\n팀 C({TEAM_C_COLOR}) 명단 : \n" + temp_c_team)
+#                channelC = get(ctx.guild.text_channels, id=727532506932445354)
+#                await channelC.send(content=f"\n팀 C({TEAM_C_COLOR}) 명단 : \n" + temp_c_team)
 
                 temp_w_team = ""
                 for i in range(0, len(queue)):
@@ -2722,7 +2841,7 @@ async def on_reaction_add(reaction, user):
             entry.append("RW/" + user.mention)
         if str(reaction.emoji) == "<:CM:706530007928930386>":
             entry.append("CM/" + user.mention)
-        if str(reaction.emoji) == "<:CDM:706530008289509466>":
+        if str(reaction.emoji) == "<:CDM:911666257219166248>":
             entry.append("CDM/" + user.mention)
         if str(reaction.emoji) == "<:LB:706530008369463359>":
             entry.append("LB/" + user.mention)
@@ -2764,7 +2883,7 @@ async def 드래프트4(ctx):
         await draft.add_reaction("<:LW:706530007937450036>")
         await draft.add_reaction("<:RW:706530008201560156>")
         await draft.add_reaction("<:CM:706530007928930386>")
-        await draft.add_reaction("<:CDM:706530008289509466>")
+        await draft.add_reaction("<:CDM:911666257219166248>")
         await draft.add_reaction("<:LB:706530008369463359>")
         await draft.add_reaction("<:CB:706530008113610803>")
         await draft.add_reaction("<:RB:706530008100765707>")
@@ -3076,6 +3195,8 @@ async def 드래프트4(ctx):
                         print(temp_a_team)
 
                 await ctx.send(content=f"팀 A({TEAM_A_COLOR}) 명단 : \n" + temp_a_team)
+#                channelA = get(ctx.guild.text_channels, id=926085731275915264)
+#                await channelA.send(content=f"팀 A({TEAM_A_COLOR}) 명단 : \n" + temp_a_team)
 
                 # 내전 B팀
                 temp_b_team = ""
@@ -3110,6 +3231,8 @@ async def 드래프트4(ctx):
                         print(temp_b_team)
 
                 await ctx.send(content=f"\n팀 B({TEAM_B_COLOR}) 명단 : \n" + temp_b_team)
+#                channelB = get(ctx.guild.text_channels, id=926097063920431194)
+#                await channelB.send(content=f"\n팀 B({TEAM_B_COLOR}) 명단 :  \n" + temp_b_team)
 
                 # 내전 C팀
                 temp_c_team = ""
@@ -3144,6 +3267,8 @@ async def 드래프트4(ctx):
                         print(temp_c_team)
 
                 await ctx.send(content=f"\n팀 C({TEAM_C_COLOR}) 명단 : \n" + temp_c_team)
+#                channelC = get(ctx.guild.text_channels, id=727532506932445354)
+#                await channelC.send(content=f"\n팀 C({TEAM_C_COLOR}) 명단 : \n" + temp_c_team)
 
                 # 내전 D팀
                 temp_d_team = ""
@@ -3178,6 +3303,8 @@ async def 드래프트4(ctx):
                         print(temp_d_team)
 
                 await ctx.send(content=f"\n팀 D({TEAM_D_COLOR}) 명단 : \n" + temp_d_team)
+#                channelD = get(ctx.guild.text_channels, id=727532609592229978)
+#                await channelD.send(content=f"\n팀 D({TEAM_D_COLOR}) 명단 : \n" + temp_d_team)
 
                 temp_w_team = ""
                 for i in range(0, len(queue)):
@@ -3214,6 +3341,1170 @@ async def 드래프트4(ctx):
 
                 await ctx.send("\n\n대기 \n" + temp_w_team)
 
+
+@bot.command()
+async def 드래프트5(ctx):
+    #if str(ctx.message.channel) != "드래프트":
+        #await ctx.send("드래프트 채널에 작성해주세요")
+    #else:
+    switch = 0
+    entry.clear()
+    entry.append("")
+    queue.clear()
+    queue.append("")
+    st.clear()
+    lw.clear()
+    rw.clear()
+    cam.clear()
+    cm.clear()
+    cdm.clear()
+    lb.clear()
+    cb.clear()
+    rb.clear()
+    gk.clear()
+    a_team.clear()
+    b_team.clear()
+    c_team.clear()
+    d_team.clear()
+    e_team.clear()
+    f_team.clear()
+
+    draft = await ctx.send("포지션을 선택해주세요")
+    await draft.add_reaction("<:ST:706530008465932299>")
+    await draft.add_reaction("<:LW:706530007937450036>")
+    await draft.add_reaction("<:RW:706530008201560156>")
+    await draft.add_reaction("<:CM:706530007928930386>")
+    await draft.add_reaction("<:CDM:911666257219166248>")
+    await draft.add_reaction("<:LB:706530008369463359>")
+    await draft.add_reaction("<:CB:706530008113610803>")
+    await draft.add_reaction("<:RB:706530008100765707>")
+    await draft.add_reaction("<:GK:706530008088182786>")
+
+    cd = await ctx.send("카운트 다운")
+    for i in range(0, MAX_COUNT):
+        j = MAX_COUNT - i
+        await cd.edit(content=f"{j}초 남았습니다.")
+        time.sleep(1)
+        if j == 1:
+            await cd.edit(content="선택 종료")
+            for k in range(0, len(entry)):
+                if entry[k].startswith("ST"):
+                    st.append(entry[k])
+                if entry[k].startswith("LW"):
+                    lw.append(entry[k])
+                if entry[k].startswith("RW"):
+                    rw.append(entry[k])
+                if entry[k].startswith("CM"):
+                    cm.append(entry[k])
+                if entry[k].startswith("CDM"):
+                    cdm.append(entry[k])
+                if entry[k].startswith("LB"):
+                    lb.append(entry[k])
+                if entry[k].startswith("CB"):
+                    cb.append(entry[k])
+                if entry[k].startswith("RB"):
+                    rb.append(entry[k])
+                if entry[k].startswith("GK"):
+                    gk.append(entry[k])
+
+            # ST 선발 & 대기열 이동
+            try:
+                temp = random.choice(st)
+                a_team.append(temp)
+                st.remove(temp)
+
+                temp = random.choice(st)
+                b_team.append(temp)
+                st.remove(temp)
+
+                temp = random.choice(st)
+                c_team.append(temp)
+                st.remove(temp)
+
+                temp = random.choice(st)
+                d_team.append(temp)
+                st.remove(temp)
+
+                temp = random.choice(st)
+                e_team.append(temp)
+                st.remove(temp)
+
+            except:
+                print(a_team)
+
+            # LW 선발
+            try:
+                temp_lw = random.choice(lw)
+                b_team.append(temp_lw)
+                lw.remove(temp_lw)
+
+                temp_lw = random.choice(lw)
+                c_team.append(temp_lw)
+                lw.remove(temp_lw)
+
+                temp_lw = random.choice(lw)
+                d_team.append(temp_lw)
+                lw.remove(temp_lw)
+
+                temp_lw = random.choice(lw)
+                e_team.append(temp_lw)
+                lw.remove(temp_lw)
+
+                temp_lw = random.choice(lw)
+                a_team.append(temp_lw)
+                lw.remove(temp_lw)
+            except:
+                print(a_team)
+
+            # RW 선발
+            try:
+                temp_rw = random.choice(rw)
+                c_team.append(temp_rw)
+                rw.remove(temp_rw)
+
+                temp_rw = random.choice(rw)
+                d_team.append(temp_rw)
+                rw.remove(temp_rw)
+
+                temp_rw = random.choice(rw)
+                e_team.append(temp_rw)
+                rw.remove(temp_rw)
+
+                temp_rw = random.choice(rw)
+                b_team.append(temp_rw)
+                rw.remove(temp_rw)
+
+                temp_rw = random.choice(rw)
+                a_team.append(temp_rw)
+                rw.remove(temp_rw)
+            except:
+                print(a_team)
+
+            # CM 선발 & 대기열 이동
+            try:
+                for j in range(0, 2):
+                    temp_cm = random.choice(cm)
+                    d_team.append(temp_cm)
+                    cm.remove(temp_cm)
+
+                    temp_cm = random.choice(cm)
+                    e_team.append(temp_cm)
+                    cm.remove(temp_cm)
+
+                    temp_cm = random.choice(cm)
+                    a_team.append(temp_cm)
+                    cm.remove(temp_cm)
+
+                    temp_cm = random.choice(cm)
+                    b_team.append(temp_cm)
+                    cm.remove(temp_cm)
+
+                    temp_cm = random.choice(cm)
+                    c_team.append(temp_cm)
+                    cm.remove(temp_cm)
+            except:
+                print(a_team)
+
+            # CDM 선발
+            try:
+                temp_cdm = random.choice(cdm)
+                e_team.append(temp_cdm)
+                cdm.remove(temp_cdm)
+
+                temp_cdm = random.choice(cdm)
+                a_team.append(temp_cdm)
+                cdm.remove(temp_cdm)
+
+                temp_cdm = random.choice(cdm)
+                b_team.append(temp_cdm)
+                cdm.remove(temp_cdm)
+
+                temp_cdm = random.choice(cdm)
+                c_team.append(temp_cdm)
+                cdm.remove(temp_cdm)
+
+                temp_cdm = random.choice(cdm)
+                d_team.append(temp_cdm)
+                cdm.remove(temp_cdm)
+            except:
+                print(a_team)
+
+            # LB 선발
+            try:
+                temp_lb = random.choice(lb)
+                b_team.append(temp_lb)
+                lb.remove(temp_lb)
+
+                temp_lb = random.choice(lb)
+                c_team.append(temp_lb)
+                lb.remove(temp_lb)
+
+                temp_lb = random.choice(lb)
+                d_team.append(temp_lb)
+                lb.remove(temp_lb)
+
+                temp_lb = random.choice(lb)
+                e_team.append(temp_lb)
+                lb.remove(temp_lb)
+
+                temp_lb = random.choice(lb)
+                a_team.append(temp_lb)
+                lb.remove(temp_lb)
+
+            except:
+                print(a_team)
+
+            # CB 선발
+            try:
+                for j in range(0, 2):
+                    temp_cb = random.choice(cb)
+                    c_team.append(temp_cb)
+                    cb.remove(temp_cb)
+
+                    temp_cb = random.choice(cb)
+                    d_team.append(temp_cb)
+                    cb.remove(temp_cb)
+
+                    temp_cb = random.choice(cb)
+                    e_team.append(temp_cb)
+                    cb.remove(temp_cb)
+
+                    temp_cb = random.choice(cb)
+                    a_team.append(temp_cb)
+                    cb.remove(temp_cb)
+
+                    temp_cb = random.choice(cb)
+                    b_team.append(temp_cb)
+                    cb.remove(temp_cb)
+            except:
+                print(a_team)
+
+            # RB 선발
+            try:
+                temp_rb = random.choice(rb)
+                d_team.append(temp_rb)
+                rb.remove(temp_rb)
+
+                temp_rb = random.choice(rb)
+                e_team.append(temp_rb)
+                rb.remove(temp_rb)
+
+                temp_rb = random.choice(rb)
+                a_team.append(temp_rb)
+                rb.remove(temp_rb)
+
+                temp_rb = random.choice(rb)
+                b_team.append(temp_rb)
+                rb.remove(temp_rb)
+
+                temp_rb = random.choice(rb)
+                c_team.append(temp_rb)
+                rb.remove(temp_rb)
+            except:
+                print(a_team)
+
+            # GK 선발
+            try:
+                temp_gk = random.choice(gk)
+                a_team.append(temp_gk)
+                gk.remove(temp_gk)
+
+                temp_gk = random.choice(gk)
+                b_team.append(temp_gk)
+                gk.remove(temp_gk)
+
+                temp_gk = random.choice(gk)
+                c_team.append(temp_gk)
+                gk.remove(temp_gk)
+
+                temp_gk = random.choice(gk)
+                d_team.append(temp_gk)
+                gk.remove(temp_gk)
+
+                temp_gk = random.choice(gk)
+                e_team.append(temp_gk)
+                gk.remove(temp_gk)
+
+            except:
+                print(a_team)
+
+            # ST 대기열 정리
+            for j in range(0, len(st)):
+                try:
+                    queue.append(st[j])
+                except:
+                    print(a_team)
+
+            # LW 대기열 정리
+            for j in range(0, len(lw)):
+                try:
+                    queue.append(lw[j])
+                except:
+                    print(a_team)
+
+            # RW 대기열 정리
+            for j in range(0, len(rw)):
+                try:
+                    queue.append(rw[j])
+                except:
+                    print(a_team)
+
+            # CM 대기열 정리
+            for j in range(0, len(cm)):
+                try:
+                    queue.append(cm[j])
+                except:
+                    print(a_team)
+
+            # CDM 대기열 정리
+            for j in range(0, len(cdm)):
+                try:
+                    queue.append(cdm[j])
+                except:
+                    print(a_team)
+
+            # LB 대기열 정리
+            for j in range(0, len(lb)):
+                try:
+                    queue.append(lb[j])
+                except:
+                    print(a_team)
+
+            # CB 대기열 정리
+            for j in range(0, len(cb)):
+                try:
+                    queue.append(cb[j])
+                except:
+                    print(a_team)
+
+            # RB 대기열 정리
+            for j in range(0, len(rb)):
+                try:
+                    queue.append(rb[j])
+                except:
+                    print(a_team)
+
+            # GK 대기열 정리
+            for j in range(0, len(gk)):
+                try:
+                    queue.append(gk[j])
+                except:
+                    print(a_team)
+
+            # 내전 A팀
+            temp_a_team = ""
+            for j in range(0, len(a_team)+1):
+                try:
+                    temp_a_team = temp_a_team + " " + a_team[j]
+                    if a_team[j].startswith("ST"):
+                        if a_team[j + 1].startswith("LW"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("LW"):
+                        if a_team[j + 1].startswith("RW"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("RW"):
+                        if a_team[j + 1].startswith("CM"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("CM"):
+                        if a_team[j + 1].startswith("CDM"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("CDM"):
+                        if a_team[j + 1].startswith("LB"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("LB"):
+                        if a_team[j + 1].startswith("CB"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("CB"):
+                        if a_team[j + 1].startswith("RB"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("RB"):
+                        if a_team[j + 1].startswith("GK"):
+                            temp_a_team = temp_a_team + "\n\n"
+                except:
+                    print(temp_a_team)
+
+            await ctx.send(content=f"팀 A({TEAM_A_COLOR}) 명단 : \n" + temp_a_team)
+#                channelA = get(ctx.guild.text_channels, id=926085731275915264)
+#                await channelA.send(content=f"팀 A({TEAM_A_COLOR}) 명단 : \n" + temp_a_team)
+
+            # 내전 B팀
+            temp_b_team = ""
+            for i in range(0, len(b_team)+1):
+                try:
+                    temp_b_team = temp_b_team + " " + b_team[i]
+                    if b_team[i].startswith("ST"):
+                        if b_team[i + 1].startswith("LW"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("LW"):
+                        if b_team[i + 1].startswith("RW"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("RW"):
+                        if b_team[i + 1].startswith("CM"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("CM"):
+                        if b_team[i + 1].startswith("CDM"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("CDM"):
+                        if b_team[i + 1].startswith("LB"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("LB"):
+                        if b_team[i + 1].startswith("CB"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("CB"):
+                        if b_team[i + 1].startswith("RB"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("RB"):
+                        if b_team[i + 1].startswith("GK", ""):
+                            temp_b_team = temp_b_team + "\n\n"
+                except:
+                    print(temp_b_team)
+
+            await ctx.send(content=f"\n팀 B({TEAM_B_COLOR}) 명단 : \n" + temp_b_team)
+#                channelB = get(ctx.guild.text_channels, id=926097063920431194)
+#                await channelB.send(content=f"\n팀 B({TEAM_B_COLOR}) 명단 :  \n" + temp_b_team)
+
+            # 내전 C팀
+            temp_c_team = ""
+            for i in range(0, len(c_team)+1):
+                try:
+                    temp_c_team = temp_c_team + " " + c_team[i]
+                    if c_team[i].startswith("ST"):
+                        if c_team[i + 1].startswith("LW"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("LW"):
+                        if c_team[i + 1].startswith("RW"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("RW"):
+                        if c_team[i + 1].startswith("CM"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("CM"):
+                        if c_team[i + 1].startswith("CDM"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("CDM"):
+                        if c_team[i + 1].startswith("LB"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("LB"):
+                        if c_team[i + 1].startswith("CB"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("CB"):
+                        if c_team[i + 1].startswith("RB"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("RB"):
+                        if c_team[i + 1].startswith("GK", ""):
+                            temp_c_team = temp_c_team + "\n\n"
+                except:
+                    print(temp_c_team)
+
+            await ctx.send(content=f"\n팀 C({TEAM_C_COLOR}) 명단 : \n" + temp_c_team)
+#                channelC = get(ctx.guild.text_channels, id=727532506932445354)
+#                await channelC.send(content=f"\n팀 C({TEAM_C_COLOR}) 명단 : \n" + temp_c_team)
+
+            # 내전 D팀
+            temp_d_team = ""
+            for i in range(0, len(d_team)+1):
+                try:
+                    temp_d_team = temp_d_team + " " + d_team[i]
+                    if d_team[i].startswith("ST"):
+                        if d_team[i + 1].startswith("LW"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("LW"):
+                        if d_team[i + 1].startswith("RW"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("RW"):
+                        if d_team[i + 1].startswith("CM"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("CM"):
+                        if d_team[i + 1].startswith("CDM"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("CDM"):
+                        if d_team[i + 1].startswith("LB"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("LB"):
+                        if d_team[i + 1].startswith("CB"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("CB"):
+                        if d_team[i + 1].startswith("RB"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("RB"):
+                        if d_team[i + 1].startswith("GK", ""):
+                            temp_d_team = temp_d_team + "\n\n"
+                except:
+                    print(temp_d_team)
+
+            await ctx.send(content=f"\n팀 D({TEAM_D_COLOR}) 명단 : \n" + temp_d_team)
+#                channelD = get(ctx.guild.text_channels, id=727532609592229978)
+#                await channelD.send(content=f"\n팀 D({TEAM_D_COLOR}) 명단 : \n" + temp_d_team)
+
+            # 내전 E팀
+            temp_e_team = ""
+            for i in range(0, len(d_team) + 1) :
+                try :
+                    temp_e_team = temp_e_team + " " + e_team[i]
+                    if e_team[i].startswith("ST") :
+                        if e_team[i + 1].startswith("LW") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("LW") :
+                        if e_team[i + 1].startswith("RW") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("RW") :
+                        if e_team[i + 1].startswith("CM") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("CM") :
+                        if e_team[i + 1].startswith("CDM") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("CDM") :
+                        if e_team[i + 1].startswith("LB") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("LB") :
+                        if e_team[i + 1].startswith("CB") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("CB") :
+                        if e_team[i + 1].startswith("RB") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("RB") :
+                        if e_team[i + 1].startswith("GK", "") :
+                            temp_e_team = temp_e_team + "\n\n"
+                except :
+                    print(temp_e_team)
+
+            await ctx.send(content=f"\n팀 E({TEAM_E_COLOR}) 명단 : \n" + temp_e_team)
+            #                channelD = get(ctx.guild.text_channels, id=727532609592229978)
+            #                await channelD.send(content=f"\n팀 D({TEAM_D_COLOR}) 명단 : \n" + temp_d_team)
+
+
+            temp_w_team = ""
+            for i in range(0, len(queue)):
+                try:
+                    if queue[i].startswith("ST"):
+                        queue[i].replace("ST", "")
+                        temp_w_team = temp_w_team + queue[i] + " ST\n"
+                    if queue[i].startswith("LW"):
+                        queue[i].replace("LW", "")
+                        temp_w_team = temp_w_team + queue[i] + " LW\n"
+                    if queue[i].startswith("RW"):
+                        queue[i].replace("RW", "")
+                        temp_w_team = temp_w_team + queue[i] + " RW\n"
+                    if queue[i].startswith("CM"):
+                        queue[i].replace("CM", "")
+                        temp_w_team = temp_w_team + queue[i] + " CM\n"
+                    if queue[i].startswith("CDM"):
+                        queue[i].replace("CDM", "")
+                        temp_w_team = temp_w_team + queue[i] + " CDM\n"
+                    if queue[i].startswith("LB"):
+                        queue[i].replace("LB", "")
+                        temp_w_team = temp_w_team + queue[i] + " LB\n"
+                    if queue[i].startswith("CB"):
+                        queue[i].replace("CB", "")
+                        temp_w_team = temp_w_team + queue[i] + " CB\n"
+                    if queue[i].startswith("RB"):
+                        queue[i].replace("RB", "")
+                        temp_w_team = temp_w_team + queue[i] + " RB\n"
+                    if queue[i].startswith("GK"):
+                        queue[i].replace("GK", "")
+                        temp_w_team = temp_w_team + queue[i] + " GK\n"
+                except:
+                    pass
+
+            await ctx.send("\n\n대기 \n" + temp_w_team)
+
+@bot.command()
+async def 드래프트6(ctx):
+    #if str(ctx.message.channel) != "드래프트":
+        #await ctx.send("드래프트 채널에 작성해주세요")
+    #else:
+    switch = 0
+    entry.clear()
+    entry.append("")
+    queue.clear()
+    queue.append("")
+    st.clear()
+    lw.clear()
+    rw.clear()
+    cam.clear()
+    cm.clear()
+    cdm.clear()
+    lb.clear()
+    cb.clear()
+    rb.clear()
+    gk.clear()
+    a_team.clear()
+    b_team.clear()
+    c_team.clear()
+    d_team.clear()
+    e_team.clear()
+    f_team.clear()
+
+    draft = await ctx.send("포지션을 선택해주세요")
+    await draft.add_reaction("<:ST:706530008465932299>")
+    await draft.add_reaction("<:LW:706530007937450036>")
+    await draft.add_reaction("<:RW:706530008201560156>")
+    await draft.add_reaction("<:CM:706530007928930386>")
+    await draft.add_reaction("<:CDM:911666257219166248>")
+    await draft.add_reaction("<:LB:706530008369463359>")
+    await draft.add_reaction("<:CB:706530008113610803>")
+    await draft.add_reaction("<:RB:706530008100765707>")
+    await draft.add_reaction("<:GK:706530008088182786>")
+
+    cd = await ctx.send("카운트 다운")
+    for i in range(0, MAX_COUNT):
+        j = MAX_COUNT - i
+        await cd.edit(content=f"{j}초 남았습니다.")
+        time.sleep(1)
+        if j == 1:
+            await cd.edit(content="선택 종료")
+            for k in range(0, len(entry)):
+                if entry[k].startswith("ST"):
+                    st.append(entry[k])
+                if entry[k].startswith("LW"):
+                    lw.append(entry[k])
+                if entry[k].startswith("RW"):
+                    rw.append(entry[k])
+                if entry[k].startswith("CM"):
+                    cm.append(entry[k])
+                if entry[k].startswith("CDM"):
+                    cdm.append(entry[k])
+                if entry[k].startswith("LB"):
+                    lb.append(entry[k])
+                if entry[k].startswith("CB"):
+                    cb.append(entry[k])
+                if entry[k].startswith("RB"):
+                    rb.append(entry[k])
+                if entry[k].startswith("GK"):
+                    gk.append(entry[k])
+
+            # ST 선발 & 대기열 이동
+            try:
+                temp = random.choice(st)
+                a_team.append(temp)
+                st.remove(temp)
+
+                temp = random.choice(st)
+                b_team.append(temp)
+                st.remove(temp)
+
+                temp = random.choice(st)
+                c_team.append(temp)
+                st.remove(temp)
+
+                temp = random.choice(st)
+                d_team.append(temp)
+                st.remove(temp)
+
+                temp = random.choice(st)
+                e_team.append(temp)
+                st.remove(temp)
+
+                temp = random.choice(st)
+                f_team.append(temp)
+                st.remove(temp)
+            except:
+                print(a_team)
+
+            # LW 선발
+            try:
+                temp_lw = random.choice(lw)
+                b_team.append(temp_lw)
+                lw.remove(temp_lw)
+
+                temp_lw = random.choice(lw)
+                c_team.append(temp_lw)
+                lw.remove(temp_lw)
+
+                temp_lw = random.choice(lw)
+                d_team.append(temp_lw)
+                lw.remove(temp_lw)
+
+                temp_lw = random.choice(lw)
+                e_team.append(temp_lw)
+                lw.remove(temp_lw)
+
+                temp_lw = random.choice(lw)
+                f_team.append(temp_lw)
+                lw.remove(temp_lw)
+
+                temp_lw = random.choice(lw)
+                a_team.append(temp_lw)
+                lw.remove(temp_lw)
+            except:
+                print(a_team)
+
+            # RW 선발
+            try:
+                temp_rw = random.choice(rw)
+                c_team.append(temp_rw)
+                rw.remove(temp_rw)
+
+                temp_rw = random.choice(rw)
+                d_team.append(temp_rw)
+                rw.remove(temp_rw)
+
+                temp_rw = random.choice(rw)
+                e_team.append(temp_rw)
+                rw.remove(temp_rw)
+
+                temp_rw = random.choice(rw)
+                f_team.append(temp_rw)
+                rw.remove(temp_rw)
+
+                temp_rw = random.choice(rw)
+                b_team.append(temp_rw)
+                rw.remove(temp_rw)
+
+                temp_rw = random.choice(rw)
+                a_team.append(temp_rw)
+                rw.remove(temp_rw)
+            except:
+                print(a_team)
+
+            # CM 선발 & 대기열 이동
+            try:
+                for j in range(0, 2):
+                    temp_cm = random.choice(cm)
+                    d_team.append(temp_cm)
+                    cm.remove(temp_cm)
+
+                    temp_cm = random.choice(cm)
+                    e_team.append(temp_cm)
+                    cm.remove(temp_cm)
+
+                    temp_cm = random.choice(cm)
+                    f_team.append(temp_cm)
+                    cm.remove(temp_cm)
+
+                    temp_cm = random.choice(cm)
+                    a_team.append(temp_cm)
+                    cm.remove(temp_cm)
+
+                    temp_cm = random.choice(cm)
+                    b_team.append(temp_cm)
+                    cm.remove(temp_cm)
+
+                    temp_cm = random.choice(cm)
+                    c_team.append(temp_cm)
+                    cm.remove(temp_cm)
+            except:
+                print(a_team)
+
+            # CDM 선발
+            try:
+                temp_cdm = random.choice(cdm)
+                e_team.append(temp_cdm)
+                cdm.remove(temp_cdm)
+
+                temp_cdm = random.choice(cdm)
+                f_team.append(temp_cdm)
+                cdm.remove(temp_cdm)
+
+                temp_cdm = random.choice(cdm)
+                a_team.append(temp_cdm)
+                cdm.remove(temp_cdm)
+
+                temp_cdm = random.choice(cdm)
+                b_team.append(temp_cdm)
+                cdm.remove(temp_cdm)
+
+                temp_cdm = random.choice(cdm)
+                c_team.append(temp_cdm)
+                cdm.remove(temp_cdm)
+
+                temp_cdm = random.choice(cdm)
+                d_team.append(temp_cdm)
+                cdm.remove(temp_cdm)
+            except:
+                print(a_team)
+
+            # LB 선발
+            try:
+                temp_lb = random.choice(lb)
+                b_team.append(temp_lb)
+                lb.remove(temp_lb)
+
+                temp_lb = random.choice(lb)
+                c_team.append(temp_lb)
+                lb.remove(temp_lb)
+
+                temp_lb = random.choice(lb)
+                d_team.append(temp_lb)
+                lb.remove(temp_lb)
+
+                temp_lb = random.choice(lb)
+                e_team.append(temp_lb)
+                lb.remove(temp_lb)
+
+                temp_lb = random.choice(lb)
+                f_team.append(temp_lb)
+                lb.remove(temp_lb)
+
+                temp_lb = random.choice(lb)
+                a_team.append(temp_lb)
+                lb.remove(temp_lb)
+
+            except:
+                print(a_team)
+
+            # CB 선발
+            try:
+                for j in range(0, 2):
+                    temp_cb = random.choice(cb)
+                    c_team.append(temp_cb)
+                    cb.remove(temp_cb)
+
+                    temp_cb = random.choice(cb)
+                    d_team.append(temp_cb)
+                    cb.remove(temp_cb)
+
+                    temp_cb = random.choice(cb)
+                    e_team.append(temp_cb)
+                    cb.remove(temp_cb)
+
+                    temp_cb = random.choice(cb)
+                    f_team.append(temp_cb)
+                    cb.remove(temp_cb)
+
+                    temp_cb = random.choice(cb)
+                    a_team.append(temp_cb)
+                    cb.remove(temp_cb)
+
+                    temp_cb = random.choice(cb)
+                    b_team.append(temp_cb)
+                    cb.remove(temp_cb)
+            except:
+                print(a_team)
+
+            # RB 선발
+            try:
+                temp_rb = random.choice(rb)
+                d_team.append(temp_rb)
+                rb.remove(temp_rb)
+
+                temp_rb = random.choice(rb)
+                e_team.append(temp_rb)
+                rb.remove(temp_rb)
+
+                temp_rb = random.choice(rb)
+                f_team.append(temp_rb)
+                rb.remove(temp_rb)
+
+                temp_rb = random.choice(rb)
+                a_team.append(temp_rb)
+                rb.remove(temp_rb)
+
+                temp_rb = random.choice(rb)
+                b_team.append(temp_rb)
+                rb.remove(temp_rb)
+
+                temp_rb = random.choice(rb)
+                c_team.append(temp_rb)
+                rb.remove(temp_rb)
+            except:
+                print(a_team)
+
+            # GK 선발
+            try:
+                temp_gk = random.choice(gk)
+                a_team.append(temp_gk)
+                gk.remove(temp_gk)
+
+                temp_gk = random.choice(gk)
+                b_team.append(temp_gk)
+                gk.remove(temp_gk)
+
+                temp_gk = random.choice(gk)
+                c_team.append(temp_gk)
+                gk.remove(temp_gk)
+
+                temp_gk = random.choice(gk)
+                d_team.append(temp_gk)
+                gk.remove(temp_gk)
+
+                temp_gk = random.choice(gk)
+                e_team.append(temp_gk)
+                gk.remove(temp_gk)
+
+                temp_gk = random.choice(gk)
+                f_team.append(temp_gk)
+                gk.remove(temp_gk)
+            except:
+                print(a_team)
+
+            # ST 대기열 정리
+            for j in range(0, len(st)):
+                try:
+                    queue.append(st[j])
+                except:
+                    print(a_team)
+
+            # LW 대기열 정리
+            for j in range(0, len(lw)):
+                try:
+                    queue.append(lw[j])
+                except:
+                    print(a_team)
+
+            # RW 대기열 정리
+            for j in range(0, len(rw)):
+                try:
+                    queue.append(rw[j])
+                except:
+                    print(a_team)
+
+            # CM 대기열 정리
+            for j in range(0, len(cm)):
+                try:
+                    queue.append(cm[j])
+                except:
+                    print(a_team)
+
+            # CDM 대기열 정리
+            for j in range(0, len(cdm)):
+                try:
+                    queue.append(cdm[j])
+                except:
+                    print(a_team)
+
+            # LB 대기열 정리
+            for j in range(0, len(lb)):
+                try:
+                    queue.append(lb[j])
+                except:
+                    print(a_team)
+
+            # CB 대기열 정리
+            for j in range(0, len(cb)):
+                try:
+                    queue.append(cb[j])
+                except:
+                    print(a_team)
+
+            # RB 대기열 정리
+            for j in range(0, len(rb)):
+                try:
+                    queue.append(rb[j])
+                except:
+                    print(a_team)
+
+            # GK 대기열 정리
+            for j in range(0, len(gk)):
+                try:
+                    queue.append(gk[j])
+                except:
+                    print(a_team)
+
+            # 내전 A팀
+            temp_a_team = ""
+            for j in range(0, len(a_team)+1):
+                try:
+                    temp_a_team = temp_a_team + " " + a_team[j]
+                    if a_team[j].startswith("ST"):
+                        if a_team[j + 1].startswith("LW"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("LW"):
+                        if a_team[j + 1].startswith("RW"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("RW"):
+                        if a_team[j + 1].startswith("CM"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("CM"):
+                        if a_team[j + 1].startswith("CDM"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("CDM"):
+                        if a_team[j + 1].startswith("LB"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("LB"):
+                        if a_team[j + 1].startswith("CB"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("CB"):
+                        if a_team[j + 1].startswith("RB"):
+                            temp_a_team = temp_a_team + "\n\n"
+                    if a_team[j].startswith("RB"):
+                        if a_team[j + 1].startswith("GK"):
+                            temp_a_team = temp_a_team + "\n\n"
+                except:
+                    print(temp_a_team)
+
+            await ctx.send(content=f"팀 A({TEAM_A_COLOR}) 명단 : \n" + temp_a_team)
+#                channelA = get(ctx.guild.text_channels, id=926085731275915264)
+#                await channelA.send(content=f"팀 A({TEAM_A_COLOR}) 명단 : \n" + temp_a_team)
+
+            # 내전 B팀
+            temp_b_team = ""
+            for i in range(0, len(b_team)+1):
+                try:
+                    temp_b_team = temp_b_team + " " + b_team[i]
+                    if b_team[i].startswith("ST"):
+                        if b_team[i + 1].startswith("LW"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("LW"):
+                        if b_team[i + 1].startswith("RW"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("RW"):
+                        if b_team[i + 1].startswith("CM"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("CM"):
+                        if b_team[i + 1].startswith("CDM"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("CDM"):
+                        if b_team[i + 1].startswith("LB"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("LB"):
+                        if b_team[i + 1].startswith("CB"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("CB"):
+                        if b_team[i + 1].startswith("RB"):
+                            temp_b_team = temp_b_team + "\n\n"
+                    if b_team[i].startswith("RB"):
+                        if b_team[i + 1].startswith("GK", ""):
+                            temp_b_team = temp_b_team + "\n\n"
+                except:
+                    print(temp_b_team)
+
+            await ctx.send(content=f"\n팀 B({TEAM_B_COLOR}) 명단 : \n" + temp_b_team)
+#                channelB = get(ctx.guild.text_channels, id=926097063920431194)
+#                await channelB.send(content=f"\n팀 B({TEAM_B_COLOR}) 명단 :  \n" + temp_b_team)
+
+            # 내전 C팀
+            temp_c_team = ""
+            for i in range(0, len(c_team)+1):
+                try:
+                    temp_c_team = temp_c_team + " " + c_team[i]
+                    if c_team[i].startswith("ST"):
+                        if c_team[i + 1].startswith("LW"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("LW"):
+                        if c_team[i + 1].startswith("RW"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("RW"):
+                        if c_team[i + 1].startswith("CM"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("CM"):
+                        if c_team[i + 1].startswith("CDM"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("CDM"):
+                        if c_team[i + 1].startswith("LB"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("LB"):
+                        if c_team[i + 1].startswith("CB"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("CB"):
+                        if c_team[i + 1].startswith("RB"):
+                            temp_c_team = temp_c_team + "\n\n"
+                    if c_team[i].startswith("RB"):
+                        if c_team[i + 1].startswith("GK", ""):
+                            temp_c_team = temp_c_team + "\n\n"
+                except:
+                    print(temp_c_team)
+
+            await ctx.send(content=f"\n팀 C({TEAM_C_COLOR}) 명단 : \n" + temp_c_team)
+#                channelC = get(ctx.guild.text_channels, id=727532506932445354)
+#                await channelC.send(content=f"\n팀 C({TEAM_C_COLOR}) 명단 : \n" + temp_c_team)
+
+            # 내전 D팀
+            temp_d_team = ""
+            for i in range(0, len(d_team)+1):
+                try:
+                    temp_d_team = temp_d_team + " " + d_team[i]
+                    if d_team[i].startswith("ST"):
+                        if d_team[i + 1].startswith("LW"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("LW"):
+                        if d_team[i + 1].startswith("RW"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("RW"):
+                        if d_team[i + 1].startswith("CM"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("CM"):
+                        if d_team[i + 1].startswith("CDM"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("CDM"):
+                        if d_team[i + 1].startswith("LB"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("LB"):
+                        if d_team[i + 1].startswith("CB"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("CB"):
+                        if d_team[i + 1].startswith("RB"):
+                            temp_d_team = temp_d_team + "\n\n"
+                    if d_team[i].startswith("RB"):
+                        if d_team[i + 1].startswith("GK", ""):
+                            temp_d_team = temp_d_team + "\n\n"
+                except:
+                    print(temp_d_team)
+
+            await ctx.send(content=f"\n팀 D({TEAM_D_COLOR}) 명단 : \n" + temp_d_team)
+#                channelD = get(ctx.guild.text_channels, id=727532609592229978)
+#                await channelD.send(content=f"\n팀 D({TEAM_D_COLOR}) 명단 : \n" + temp_d_team)
+
+            # 내전 E팀
+            temp_e_team = ""
+            for i in range(0, len(d_team) + 1) :
+                try :
+                    temp_e_team = temp_e_team + " " + e_team[i]
+                    if e_team[i].startswith("ST") :
+                        if e_team[i + 1].startswith("LW") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("LW") :
+                        if e_team[i + 1].startswith("RW") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("RW") :
+                        if e_team[i + 1].startswith("CM") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("CM") :
+                        if e_team[i + 1].startswith("CDM") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("CDM") :
+                        if e_team[i + 1].startswith("LB") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("LB") :
+                        if e_team[i + 1].startswith("CB") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("CB") :
+                        if e_team[i + 1].startswith("RB") :
+                            temp_e_team = temp_e_team + "\n\n"
+                    if e_team[i].startswith("RB") :
+                        if e_team[i + 1].startswith("GK", "") :
+                            temp_e_team = temp_e_team + "\n\n"
+                except :
+                    print(temp_e_team)
+
+            await ctx.send(content=f"\n팀 E({TEAM_E_COLOR}) 명단 : \n" + temp_e_team)
+            #                channelD = get(ctx.guild.text_channels, id=727532609592229978)
+            #                await channelD.send(content=f"\n팀 D({TEAM_D_COLOR}) 명단 : \n" + temp_d_team)
+
+
+            temp_w_team = ""
+            for i in range(0, len(queue)):
+                try:
+                    if queue[i].startswith("ST"):
+                        queue[i].replace("ST", "")
+                        temp_w_team = temp_w_team + queue[i] + " ST\n"
+                    if queue[i].startswith("LW"):
+                        queue[i].replace("LW", "")
+                        temp_w_team = temp_w_team + queue[i] + " LW\n"
+                    if queue[i].startswith("RW"):
+                        queue[i].replace("RW", "")
+                        temp_w_team = temp_w_team + queue[i] + " RW\n"
+                    if queue[i].startswith("CM"):
+                        queue[i].replace("CM", "")
+                        temp_w_team = temp_w_team + queue[i] + " CM\n"
+                    if queue[i].startswith("CDM"):
+                        queue[i].replace("CDM", "")
+                        temp_w_team = temp_w_team + queue[i] + " CDM\n"
+                    if queue[i].startswith("LB"):
+                        queue[i].replace("LB", "")
+                        temp_w_team = temp_w_team + queue[i] + " LB\n"
+                    if queue[i].startswith("CB"):
+                        queue[i].replace("CB", "")
+                        temp_w_team = temp_w_team + queue[i] + " CB\n"
+                    if queue[i].startswith("RB"):
+                        queue[i].replace("RB", "")
+                        temp_w_team = temp_w_team + queue[i] + " RB\n"
+                    if queue[i].startswith("GK"):
+                        queue[i].replace("GK", "")
+                        temp_w_team = temp_w_team + queue[i] + " GK\n"
+                except:
+                    pass
+
+            await ctx.send("\n\n대기 \n" + temp_w_team)
 '''
 @bot.command()
 async def 대기실분배2(ctx, num1, num2):
@@ -3270,7 +4561,7 @@ async def on_reaction_add(reaction, user):
             entry.append("CM/" + user.mention)
         if str(reaction.emoji) == "<:CAM:706530008243634176>":
             entry.append("CAM/" + user.mention)
-        if str(reaction.emoji) == "<:CDM:706530008289509466>":
+        if str(reaction.emoji) == "<:CDM:911666257219166248>":
             entry.append("CDM/" + user.mention)
         if str(reaction.emoji) == "<:LB:706530008369463359>":
             entry.append("LB/" + user.mention)
